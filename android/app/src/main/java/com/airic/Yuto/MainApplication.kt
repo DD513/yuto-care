@@ -1,4 +1,4 @@
-package com.araic.Yuto
+package com.airic.Yuto
 
 import android.app.Application
 import android.content.res.Configuration

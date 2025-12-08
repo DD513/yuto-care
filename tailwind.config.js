@@ -16,6 +16,11 @@ module.exports = {
         secondary: "#FFD972",
         background: "#F5FBFF",
       },
+      fontFamily: {
+        // 這裡的 'yuto' 是 Tailwind 用的 key
+        // 陣列裡第一個字串要跟 useFonts 的 key 一樣
+        englishTitle: ["YutoEnglishTitleRegular", "System"],
+      },
     },
   },
   plugins: [],
