@@ -12,9 +12,26 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#A38CFF",
+        primary: "#C79AEE",
         secondary: "#FFD972",
-        background: "#F5FBFF",
+
+        // App 背景
+        "bg-app-light": "#F5F5F7", // 淺色整體背景
+        "bg-app-dark": "#050509", // 深色整體背景（接近 Mymory 那種）
+
+        // 卡片 / 區塊
+        "card-light": "#FFFFFF",
+        "card-dark": "#111111",
+
+        // 文字
+        "text-main-light": "#111827",
+        "text-main-dark": "#F9FAFB",
+        "text-subtle-light": "#6B7280",
+        "text-subtle-dark": "#9CA3AF",
+
+        // 邊線
+        "border-subtle-light": "#E5E7EB",
+        "border-subtle-dark": "#27272F",
       },
       fontFamily: {
         // 這裡的 'yuto' 是 Tailwind 用的 key
