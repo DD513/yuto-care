@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "../../hooks/useTheme";
+import { Header } from "../../components/navigation/Header";
 
 export default function MemberScreen() {
   const { theme, colorScheme } = useTheme();
@@ -16,12 +17,13 @@ export default function MemberScreen() {
         : "淺色主題";
 
   return (
-    <SafeAreaView className="flex-1 bg-bg-app-light dark:bg-bg-app-dark">
+    <SafeAreaView className="flex-1 bg-bg-light dark:bg-bg-dark">
+      <Header title="會員中心" showBackButton={false} />
       <ScrollView
         contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 16 }}
       >
         {/* 會員中心頭部 */}
-        <Text className="text-base font-semibold text-text-main-light dark:text-text-main-dark">
+        <Text className="text-base font-semibold text-text-light dark:text-text-dark">
           會員中心
         </Text>
         <Text className="mt-2 text-sm text-text-subtle-light dark:text-text-subtle-dark">
@@ -29,7 +31,7 @@ export default function MemberScreen() {
         </Text>
 
         {/* 設定卡片（簡化版，可以慢慢加其他項目） */}
-        <View className="mt-6 rounded-3xl bg-card-light dark:bg-card-dark overflow-hidden">
+        <View className="mt-6 rounded-3xl bg-surface-light dark:bg-surface-dark overflow-hidden">
           {/* 主題列 */}
           <Pressable
             onPress={() => router.push("/(main)/member/theme")}
@@ -44,7 +46,7 @@ export default function MemberScreen() {
                 />
               </View>
               <View>
-                <Text className="text-sm text-text-main-light dark:text-text-main-dark">
+                <Text className="text-sm text-text-light dark:text-text-dark">
                   主題
                 </Text>
                 <Text className="mt-0.5 text-xs text-text-subtle-light dark:text-text-subtle-dark">

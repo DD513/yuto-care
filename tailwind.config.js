@@ -12,26 +12,52 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#C79AEE",
-        secondary: "#FFD972",
+        // 品牌色（不分主題）
+        primary: {
+          DEFAULT: "#C79AEE",
+          dark: "#A67DD4", // 深色模式下稍微調暗
+        },
+        secondary: {
+          DEFAULT: "#FFD972",
+          dark: "#E6C35E",
+        },
 
         // App 背景
-        "bg-app-light": "#F5F5F7", // 淺色整體背景
-        "bg-app-dark": "#050509", // 深色整體背景（接近 Mymory 那種）
+        bg: {
+          light: "#F8F8F8",
+          dark: "#050509",
+        },
 
         // 卡片 / 區塊
-        "card-light": "#FFFFFF",
-        "card-dark": "#111111",
+        surface: {
+          // 卡片/容器背景
+          light: "#FFFFFF",
+          dark: "#111111",
+        },
+        elevated: {
+          // 浮起的元素（如 modal、dropdown）
+          light: "#FFFFFF",
+          dark: "#1A1A1A",
+        },
 
         // 文字
-        "text-main-light": "#111827",
-        "text-main-dark": "#F9FAFB",
-        "text-subtle-light": "#6B7280",
-        "text-subtle-dark": "#9CA3AF",
+        text: {
+          light: "#111827",
+          dark: "#F9FAFB",
+          "subtle-light": "#6B7280",
+          "subtle-dark": "#9CA3AF",
+        },
 
-        // 邊線
-        "border-subtle-light": "#E5E7EB",
-        "border-subtle-dark": "#27272F",
+        // 邊框/分隔線
+        border: {
+          light: "#E5E7EB",
+          dark: "#27272F",
+        },
+        divider: {
+          // 分隔線（更細的邊框）
+          light: "#F3F4F6",
+          dark: "#1F1F23",
+        },
       },
       fontFamily: {
         // 這裡的 'yuto' 是 Tailwind 用的 key
