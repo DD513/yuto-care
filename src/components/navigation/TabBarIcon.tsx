@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useTheme } from "../../hooks/useTheme";
 
 type IconName = React.ComponentProps<typeof Ionicons>["name"];
 
@@ -20,14 +21,17 @@ export function TabBarIcon({
   color,
 }: Props) {
   const iconName = focused ? activeName : inactiveName;
+  const { colorScheme } = useTheme();
 
   return (
     <View className="items-center justify-center">
       <Ionicons name={iconName} size={24} color={color} />
 
       <Text
-        className={`mt-1 text-xs ${
-          focused ? "font-semibold text-primary" : "text-gray-400"
+        className={`font-chineseRegular mt-1 text-xs ${
+          focused
+            ? "font-semibold text-primary dark:text-primary-dark"
+            : "text-gray-400"
         }`}
       >
         {label}

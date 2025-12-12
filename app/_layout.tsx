@@ -15,6 +15,10 @@ export default function RootLayout() {
   const [fontsLoaded] = useFonts({
     // key 名是之後在 fontFamily 要用到的字串
     YutoEnglishTitleRegular: require("../assets/fonts/LilitaOne-Regular.ttf"),
+    ChineseRegular: require("../assets/fonts/LINESeedTW_TTF_Rg.ttf"),
+    ChineseBold: require("../assets/fonts/LINESeedTW_TTF_Bd.ttf"),
+    EnglishRegular: require("../assets/fonts/LINESeedSans_A_Rg.ttf"),
+    EnglishBold: require("../assets/fonts/LINESeedSans_A_Bd.ttf"),
   });
 
   React.useEffect(() => {

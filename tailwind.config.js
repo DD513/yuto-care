@@ -14,8 +14,8 @@ module.exports = {
       colors: {
         // 品牌色（不分主題）
         primary: {
-          DEFAULT: "#C79AEE",
-          dark: "#A67DD4", // 深色模式下稍微調暗
+          DEFAULT: "#7161ef",
+          dark: "#C79AEE",
         },
         secondary: {
           DEFAULT: "#FFD972",
@@ -63,6 +63,10 @@ module.exports = {
         // 這裡的 'yuto' 是 Tailwind 用的 key
         // 陣列裡第一個字串要跟 useFonts 的 key 一樣
         englishTitle: ["YutoEnglishTitleRegular", "System"],
+        chineseRegular: ["ChineseRegular", "System"],
+        chineseBold: ["ChineseBold", "System"],
+        englishRegular: ["EnglishRegular", "System"],
+        englishBold: ["EnglishBold", "System"],
       },
     },
   },

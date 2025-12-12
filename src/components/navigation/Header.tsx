@@ -30,7 +30,7 @@ export function Header({
 
       {/* 使標題居中，無論是否顯示返回按鈕 */}
       <Text
-        className={`text-xl font-semibold text-text-light dark:text-text-dark ${
+        className={`font-chineseBold text-xl font-semibold text-text-light dark:text-text-dark ${
           showBackButton ? "" : "flex-1 text-center"
         }`}
       >

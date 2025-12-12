@@ -23,10 +23,10 @@ export default function MemberScreen() {
         contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 16 }}
       >
         {/* 會員中心頭部 */}
-        <Text className="text-base font-semibold text-text-light dark:text-text-dark">
+        <Text className="font-chineseBold text-base font-semibold text-text-light dark:text-text-dark">
           會員中心
         </Text>
-        <Text className="mt-2 text-sm text-text-subtle-light dark:text-text-subtle-dark">
+        <Text className="font-chineseRegular mt-2 text-sm text-text-subtle-light dark:text-text-subtle-dark">
           之後會放：個人資料、所屬醫院與部門、帳號設定、登出等。
         </Text>
 
@@ -46,12 +46,12 @@ export default function MemberScreen() {
                 />
               </View>
               <View>
-                <Text className="text-sm text-text-light dark:text-text-dark">
+                <Text className="font-chineseRegular text-base text-text-light dark:text-text-dark">
                   主題
                 </Text>
-                <Text className="mt-0.5 text-xs text-text-subtle-light dark:text-text-subtle-dark">
+                {/* <Text className="font-chineseRegularmt-0.5 text-xs text-text-subtle-light dark:text-text-subtle-dark">
                   {themeLabel}
-                </Text>
+                </Text> */}
               </View>
             </View>
 

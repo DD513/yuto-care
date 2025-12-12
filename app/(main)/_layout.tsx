@@ -11,7 +11,7 @@ export default function MainLayout() {
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false, // label 我們自己畫在 TabBarIcon 裡
-        tabBarActiveTintColor: "#C79AEE", // primary
+        tabBarActiveTintColor: colorScheme === "dark" ? "#C79AEE" : "#7161ef", // primary
         tabBarInactiveTintColor: "#9CA3AF",
         tabBarStyle: {
           backgroundColor: colorScheme === "dark" ? "#050509" : "#F8F8F8", // 根據主題設置背景顏色

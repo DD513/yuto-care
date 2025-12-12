@@ -41,10 +41,10 @@ export default function ThemeScreen() {
                 }`}
               >
                 <View className="flex-1">
-                  <Text className="text-sm text-text-light dark:text-text-dark">
+                  <Text className="font-chineseRegular text-base text-text-light dark:text-text-dark">
                     {opt.label}
                   </Text>
-                  <Text className="mt-0.5 text-xs text-text-subtle-light dark:text-text-subtle-dark">
+                  <Text className="font-chineseRegularmt-0.5 text-xs text-text-subtle-light dark:text-text-subtle-dark">
                     {opt.desc}
                   </Text>
                 </View>
