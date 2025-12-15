@@ -1,3 +1,3 @@
-import ActivityScreen from "../../src/screens/ActivityScreen";
+import ActivityScreen from "@/screens/ActivityScreen";
 
 export default ActivityScreen;

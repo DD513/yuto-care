@@ -1,3 +1,3 @@
-import MemberScreen from "../../../src/screens/member/MemberScreen";
+import MemberScreen from "@/screens/member/MemberScreen";
 
 export default MemberScreen;

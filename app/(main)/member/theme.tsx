@@ -1,3 +1,3 @@
-import ThemeScreen from "../../../src/screens/member/ThemeScreen";
+import ThemeScreen from "@/screens/member/ThemeScreen";
 
 export default ThemeScreen;

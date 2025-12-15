@@ -1,7 +1,7 @@
 import React from "react";
 import { Tabs } from "expo-router";
-import { TabBarIcon } from "../../src/components/navigation/TabBarIcon";
-import { useTheme } from "../../src/hooks/useTheme";
+import { TabBarIcon } from "@/components/navigation/TabBarIcon";
+import { useTheme } from "@/hooks/useTheme";
 
 export default function MainLayout() {
   const { colorScheme } = useTheme();

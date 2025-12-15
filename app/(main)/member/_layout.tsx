@@ -1,5 +1,4 @@
 import { Stack } from "expo-router";
-import { Header } from "../../../src/components/navigation/Header";
 
 export default function MemberLayout() {
   return (

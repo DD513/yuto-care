@@ -5,7 +5,7 @@ import { Slot } from "expo-router";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { YutoThemeProvider } from "../src/contexts/ThemeProvider";
+import { YutoThemeProvider } from "@/contexts/ThemeProvider";
 
 SplashScreen.preventAutoHideAsync().catch(() => {
   /* ignore */
