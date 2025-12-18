@@ -1,13 +1,15 @@
 import React from "react";
-import { View, Text, Pressable, ScrollView } from "react-native";
+import { View, Text, Pressable, ScrollView, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "../../hooks/useTheme";
 import { Header } from "../../components/navigation/Header";
+import { useAuth } from "@/contexts/AuthProvider";
 
 export default function MemberScreen() {
   const { theme, colorScheme } = useTheme();
+  const { user, logout } = useAuth();
 
   const themeLabel =
     theme === "system"
@@ -15,6 +17,22 @@ export default function MemberScreen() {
       : theme === "dark"
         ? "深色主題"
         : "淺色主題";
+
+  const initial = user?.name?.trim()?.[0] ?? "？";
+
+  const onLogout = () => {
+    Alert.alert("登出", "確定要登出嗎？", [
+      { text: "取消", style: "cancel" },
+      {
+        text: "登出",
+        style: "destructive",
+        onPress: async () => {
+          await logout(); // ✅ 會清 token（authApi.logout -> tokenStorage.clear）
+          router.replace("/(auth)/login");
+        },
+      },
+    ]);
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-bg-light dark:bg-bg-dark">
@@ -29,6 +47,26 @@ export default function MemberScreen() {
         <Text className="font-chineseRegular mt-2 text-sm text-text-subtle-light dark:text-text-subtle-dark">
           之後會放：個人資料、所屬醫院與部門、帳號設定、登出等。
         </Text>
+
+        {/* ✅ 使用者資訊卡 */}
+        <View className="mt-6 rounded-3xl bg-surface-light dark:bg-surface-dark overflow-hidden px-4 py-4">
+          <View className="flex-row items-center">
+            <View className="h-12 w-12 items-center justify-center rounded-full bg-secondary/40 dark:bg-secondary/80">
+              <Text className="font-chineseBold text-lg text-text-light dark:text-text-dark">
+                {initial}
+              </Text>
+            </View>
+
+            <View className="ml-4 flex-1">
+              <Text className="font-chineseBold text-base text-text-light dark:text-text-dark">
+                {user?.name ?? "未登入"}
+              </Text>
+              <Text className="font-chineseRegular mt-1 text-sm text-text-subtle-light dark:text-text-subtle-dark">
+                {user?.role ?? "—"} · {user?.unit ?? "—"}
+              </Text>
+            </View>
+          </View>
+        </View>
 
         {/* 設定卡片（簡化版，可以慢慢加其他項目） */}
         <View className="mt-6 rounded-3xl bg-surface-light dark:bg-surface-dark overflow-hidden">
@@ -62,6 +100,16 @@ export default function MemberScreen() {
             />
           </Pressable>
         </View>
+
+        {/* ✅ 登出按鈕 */}
+        <Pressable
+          onPress={onLogout}
+          className="mt-6 rounded-2xl bg-red-500/10 dark:bg-red-400/15 px-4 py-3 items-center"
+        >
+          <Text className="font-chineseBold text-base text-red-600 dark:text-red-300">
+            登出
+          </Text>
+        </Pressable>
       </ScrollView>
     </SafeAreaView>
   );

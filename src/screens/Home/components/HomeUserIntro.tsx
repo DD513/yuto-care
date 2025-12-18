@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text } from "react-native";
-import type { HomeUser } from "../types";
+import type { HomeUser } from "@/shared/types/user";
 
 function getGreeting() {
   const hour = new Date().getHours();
@@ -15,6 +15,7 @@ type Props = {
 
 export const HomeUserIntro: React.FC<Props> = ({ user }) => {
   const greeting = getGreeting();
+  const initial = user?.name?.trim()?.[0] ?? "？";
 
   return (
     <View className="px-6 pb-4">
@@ -30,7 +31,7 @@ export const HomeUserIntro: React.FC<Props> = ({ user }) => {
 
         <View className="h-11 w-11 items-center justify-center rounded-full bg-secondary/40 dark:bg-secondary/80">
           <Text className="font-chineseBold text-base text-text-light dark:text-text-dark">
-            {user.name[0]}
+            {initial}
           </Text>
         </View>
       </View>

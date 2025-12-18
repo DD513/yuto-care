@@ -1,11 +1,4 @@
-import type { EducationCard, HomeTodo, HomeUser, WoundModel } from "./types";
-
-export const mockUser: HomeUser = {
-  name: "王小玲",
-  role: "護理師",
-  unit: "護理部 5C 病房",
-  id: "N-10327",
-};
+import type { EducationCard, HomeTodo, WoundModel } from "./types";
 
 export const mockTodos: HomeTodo[] = [
   {

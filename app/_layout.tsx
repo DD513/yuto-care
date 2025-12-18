@@ -1,11 +1,13 @@
 import "../global.css"; // ✅ 在這裡 import Tailwind / NativeWind 的 CSS
 
 import React from "react";
-import { Slot } from "expo-router";
+import { Slot, useRouter, useSegments } from "expo-router";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { YutoThemeProvider } from "@/contexts/ThemeProvider";
+import { AuthProvider } from "@/contexts/AuthProvider";
+import { RouteGuard } from "@/navigation/RouteGuard";
 
 SplashScreen.preventAutoHideAsync().catch(() => {
   /* ignore */
@@ -21,6 +23,9 @@ export default function RootLayout() {
     EnglishBold: require("../assets/fonts/LINESeedSans_A_Bd.ttf"),
   });
 
+  // Splash：等 fonts + auth bootstrap 都完成再關
+  // 注意：bootstrapped 在 RouteGuard 裡，所以我們用 onLayout or 分離都行；
+  // 這裡用簡化做法：fontsLoaded 就先不 render，避免閃爍
   React.useEffect(() => {
     if (fontsLoaded) {
       SplashScreen.hideAsync().catch(() => {});
@@ -33,11 +38,12 @@ export default function RootLayout() {
   }
 
   return (
-    <YutoThemeProvider>
-      <SafeAreaProvider>
-        {/* Slot = 在這個 layout 底下的子 route */}
-        <Slot />
-      </SafeAreaProvider>
-    </YutoThemeProvider>
+    <AuthProvider>
+      <YutoThemeProvider>
+        <SafeAreaProvider>
+          <RouteGuard />
+        </SafeAreaProvider>
+      </YutoThemeProvider>
+    </AuthProvider>
   );
 }
