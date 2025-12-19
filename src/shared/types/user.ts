@@ -5,4 +5,5 @@ export type HomeUser = {
   role: UserRole;
   unit: string;
   id?: string; // 有才顯示
+  uri?: string;
 };

@@ -5,4 +5,5 @@ export const mockUser: HomeUser = {
   name: "王小玲",
   role: "護理師",
   unit: "護理部 5C 病房",
+  uri: require("../../../assets/images/user/woman-1.jpg"),
 } as const;

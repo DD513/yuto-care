@@ -1,11 +1,13 @@
 import React from "react";
-import { View, Text, Pressable, ScrollView, Alert } from "react-native";
+import { View, Text, ScrollView, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "../../hooks/useTheme";
 import { Header } from "../../components/navigation/Header";
 import { useAuth } from "@/contexts/AuthProvider";
+import { ListRow } from "@/components/ui/ListRow";
+import { Avatar } from "@/components/ui/Avatar";
+import { ListGroup } from "@/components/ui/ListGroup";
 
 export default function MemberScreen() {
   const { theme, colorScheme } = useTheme();
@@ -15,10 +17,8 @@ export default function MemberScreen() {
     theme === "system"
       ? `跟隨系統（${colorScheme === "dark" ? "深色" : "淺色"}）`
       : theme === "dark"
-        ? "深色主題"
-        : "淺色主題";
-
-  const initial = user?.name?.trim()?.[0] ?? "？";
+        ? "深色"
+        : "淺色";
 
   const onLogout = () => {
     Alert.alert("登出", "確定要登出嗎？", [
@@ -27,89 +27,119 @@ export default function MemberScreen() {
         text: "登出",
         style: "destructive",
         onPress: async () => {
-          await logout(); // ✅ 會清 token（authApi.logout -> tokenStorage.clear）
-          router.replace("/(auth)/login");
+          await logout(); // ✅ tokenStorage.clear() + setUser(null)
+          router.replace("/(auth)/login"); // （RouteGuard 也會處理）
         },
       },
     ]);
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-bg-light dark:bg-bg-dark">
-      <Header title="會員中心" showBackButton={false} />
+    <SafeAreaView
+      className="flex-1 bg-bg-light dark:bg-bg-dark"
+      edges={["top"]}
+    >
+      <Header title="個人" showBackButton={false} />
+
       <ScrollView
         contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 16 }}
       >
-        {/* 會員中心頭部 */}
-        <Text className="font-chineseBold text-base font-semibold text-text-light dark:text-text-dark">
-          會員中心
-        </Text>
-        <Text className="font-chineseRegular mt-2 text-sm text-text-subtle-light dark:text-text-subtle-dark">
-          之後會放：個人資料、所屬醫院與部門、帳號設定、登出等。
-        </Text>
-
-        {/* ✅ 使用者資訊卡 */}
-        <View className="mt-6 rounded-3xl bg-surface-light dark:bg-surface-dark overflow-hidden px-4 py-4">
-          <View className="flex-row items-center">
-            <View className="h-12 w-12 items-center justify-center rounded-full bg-secondary/40 dark:bg-secondary/80">
-              <Text className="font-chineseBold text-lg text-text-light dark:text-text-dark">
-                {initial}
-              </Text>
-            </View>
-
+        {/* ✅ Profile Card（仿照你給的「頭像 + 名字 + 次要資訊」卡片） */}
+        <ListGroup>
+          <View className="flex-row items-center px-4 py-4">
+            <Avatar
+              name={user?.name}
+              size={48}
+              uri={user?.uri}
+              className="bg-bg-light/70 dark:bg-bg-dark/60"
+            />
             <View className="ml-4 flex-1">
-              <Text className="font-chineseBold text-base text-text-light dark:text-text-dark">
+              <Text className="font-chineseBold text-lg text-text-light dark:text-text-dark">
                 {user?.name ?? "未登入"}
               </Text>
-              <Text className="font-chineseRegular mt-1 text-sm text-text-subtle-light dark:text-text-subtle-dark">
-                {user?.role ?? "—"} · {user?.unit ?? "—"}
+              <Text className="mt-1 font-chineseRegular text-sm text-text-subtle-light dark:text-text-subtle-dark">
+                {(user?.role ?? "—") + " · " + (user?.unit ?? "—")}
               </Text>
             </View>
           </View>
-        </View>
+        </ListGroup>
 
-        {/* 設定卡片（簡化版，可以慢慢加其他項目） */}
-        <View className="mt-6 rounded-3xl bg-surface-light dark:bg-surface-dark overflow-hidden">
-          {/* 主題列 */}
-          <Pressable
+        {/* ✅ Section title */}
+        <Text className="mt-6 mb-2 px-1 font-chineseRegular text-base text-text-subtle-light dark:text-text-subtle-dark">
+          偏好
+        </Text>
+
+        {/* ✅ Settings Card（仿照你給的「一張卡多列」） */}
+        <ListGroup className="mt-0">
+          <ListRow
+            iconName="color-palette-outline"
+            label="主題"
+            value={themeLabel}
             onPress={() => router.push("/(main)/member/theme")}
-            className="flex-row items-center justify-between px-4 py-3"
-          >
-            <View className="flex-row items-center gap-x-3">
-              <View className="h-8 w-8 items-center justify-center rounded-full bg-primary/15 dark:bg-primary/25">
-                <Ionicons
-                  name="color-palette-outline"
-                  size={18}
-                  color={colorScheme === "dark" ? "#F9FAFB" : "#4B5563"}
-                />
-              </View>
-              <View>
-                <Text className="font-chineseRegular text-base text-text-light dark:text-text-dark">
-                  主題
-                </Text>
-                {/* <Text className="font-chineseRegularmt-0.5 text-xs text-text-subtle-light dark:text-text-subtle-dark">
-                  {themeLabel}
-                </Text> */}
-              </View>
-            </View>
+          />
+          <ListRow
+            iconName="notifications-outline"
+            label="通知"
+            onPress={() => {
+              // TODO: router.push("/(main)/member/notifications-settings")
+            }}
+          />
+          <ListRow
+            iconName="lock-closed-outline"
+            label="鎖定螢幕"
+            onPress={() => {
+              // TODO
+            }}
+            isLast
+          />
+        </ListGroup>
 
-            <Ionicons
-              name="chevron-forward"
-              size={18}
-              color={colorScheme === "dark" ? "#9CA3AF" : "#9CA3AF"}
-            />
-          </Pressable>
-        </View>
+        {/* ✅ 其他 */}
+        <ListGroup className="mt-6">
+          <ListRow
+            iconName="star-outline"
+            label="寫評價"
+            onPress={() => {
+              // TODO: App Store / Play Store deep link
+            }}
+          />
+          <ListRow
+            iconName="help-circle-outline"
+            label="Yuto 支援"
+            onPress={() => {
+              // TODO
+            }}
+          />
+          <ListRow
+            iconName="information-circle-outline"
+            label="App 資訊"
+            onPress={() => {
+              // TODO
+            }}
+          />
+          <ListRow
+            iconName="person-outline"
+            label="帳號"
+            onPress={() => {
+              // TODO: router.push("/(main)/member/account")
+            }}
+            isLast
+          />
+        </ListGroup>
 
-        {/* ✅ 登出按鈕 */}
-        <Pressable
-          onPress={onLogout}
-          className="mt-6 rounded-2xl bg-red-500/10 dark:bg-red-400/15 px-4 py-3 items-center"
-        >
-          <Text className="font-chineseBold text-base text-red-600 dark:text-red-300">
-            登出
-          </Text>
-        </Pressable>
+        {/* ✅ Logout（放在卡片列的風格，跟截圖一致） */}
+        <ListGroup className="mt-6">
+          <ListRow
+            iconName="log-out-outline"
+            label="登出"
+            onPress={onLogout}
+            danger
+            showChevron={false}
+            isLast
+          />
+        </ListGroup>
+
+        <View className="h-8" />
       </ScrollView>
     </SafeAreaView>
   );

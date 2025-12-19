@@ -2,12 +2,16 @@ import React from "react";
 import { View, Text, ScrollView, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import type { WoundModel } from "../types";
+import { useTheme } from "@/hooks/useTheme";
+import { Colors } from "@/constants/colors";
 
 type Props = {
   models: WoundModel[];
 };
 
 export const HomeWoundModelsSection: React.FC<Props> = ({ models }) => {
+  const { colorScheme } = useTheme();
+  const colors = Colors[colorScheme];
   return (
     <View className="mt-6 px-6">
       <View className="mb-2 flex-row items-center justify-between">
@@ -40,7 +44,11 @@ export const HomeWoundModelsSection: React.FC<Props> = ({ models }) => {
                   {model.tag}
                 </Text>
               </View>
-              <Ionicons name="sparkles-outline" size={16} color="#FFD972" />
+              <Ionicons
+                name="sparkles-outline"
+                size={16}
+                color={colors.secondary}
+              />
             </View>
 
             <Text className="font-chineseBold text-base text-text-light dark:text-text-dark">

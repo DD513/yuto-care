@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, TextInput, Pressable, TextInputProps } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useTheme } from "@/hooks/useTheme";
 
 type Props = {
   label: string;
@@ -24,6 +25,8 @@ export function UnderlineInput({
   underlineClassName = "",
   ...inputProps
 }: Props) {
+  const { colorScheme } = useTheme();
+
   return (
     <View className={containerClassName}>
       <Text
@@ -38,7 +41,8 @@ export function UnderlineInput({
         <TextInput
           {...inputProps}
           placeholderTextColor={
-            inputProps.placeholderTextColor ?? "rgba(0,0,0,0.25)"
+            inputProps.placeholderTextColor ??
+            (colorScheme === "dark" ? "#9CA3AF" : "#6B7280")
           }
           className={`flex-1 py-2 font-chineseRegular text-lg text-text-light dark:text-text-dark ${inputClassName}`}
         />

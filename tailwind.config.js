@@ -25,27 +25,27 @@ module.exports = {
         // App 背景
         bg: {
           light: "#F8F8F8",
-          dark: "#050509",
+          dark: "#191919",
         },
 
         // 卡片 / 區塊
         surface: {
           // 卡片/容器背景
           light: "#FFFFFF",
-          dark: "#111111",
+          dark: "#242424",
         },
         elevated: {
           // 浮起的元素（如 modal、dropdown）
           light: "#FFFFFF",
-          dark: "#1A1A1A",
+          dark: "#242424",
         },
 
         // 文字
         text: {
           light: "#111827",
-          dark: "#F9FAFB",
+          dark: "#F1F1F1",
           "subtle-light": "#6B7280",
-          "subtle-dark": "#9CA3AF",
+          "subtle-dark": "#BFBFBF",
         },
 
         // 邊框/分隔線

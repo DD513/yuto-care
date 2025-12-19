@@ -2,20 +2,22 @@ import React from "react";
 import { Tabs } from "expo-router";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { useTheme } from "@/hooks/useTheme";
+import { Colors } from "@/constants/colors";
 
 export default function MainLayout() {
   const { colorScheme } = useTheme();
+  const colors = Colors[colorScheme];
 
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false, // label 我們自己畫在 TabBarIcon 裡
-        tabBarActiveTintColor: colorScheme === "dark" ? "#C79AEE" : "#7161ef", // primary
+        tabBarActiveTintColor: colors.primary, // primary
         tabBarInactiveTintColor: "#9CA3AF",
         tabBarStyle: {
-          backgroundColor: colorScheme === "dark" ? "#050509" : "#F8F8F8", // 根據主題設置背景顏色
-          borderTopColor: colorScheme === "dark" ? "#27272F" : "#E5E7EB", // 根據主題設置邊框顏色
+          backgroundColor: colors.bg, // 根據主題設置背景顏色
+          borderTopColor: colors.border, // 根據主題設置邊框顏色
           height: 80,
           paddingTop: 16,
           paddingBottom: 16,

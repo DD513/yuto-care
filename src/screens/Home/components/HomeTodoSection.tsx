@@ -26,7 +26,7 @@ export const HomeTodoSection: React.FC<Props> = ({ todos }) => {
         {todos.map((todo) => (
           <Pressable
             key={todo.id}
-            className="mb-2 rounded-3xl bg-surface-light px-4 py-3 shadow-sm shadow-black/5 active:opacity-95 dark:bg-surface-dark"
+            className="mb-2 rounded-3xl  px-4 py-3 shadow-sm shadow-black/5 active:opacity-95 bg-surface-light dark:bg-surface-dark"
           >
             <View className="flex-row items-center">
               {/* 左側縮圖 */}

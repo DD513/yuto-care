@@ -15,11 +15,15 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import { useAuth } from "@/contexts/AuthProvider";
 import { UnderlineInput } from "@/components/ui/UnderlineInput";
+import { useTheme } from "@/hooks/useTheme";
+import { Colors } from "@/constants/colors";
 
-const ILLUSTRATION_SOURCE = require("../../../../assets/images/yuto-mascot4.png"); // TODO: 換成你的插圖/吉祥物
+const ILLUSTRATION_SOURCE = require("../../../../assets/images/logo/yuto-mascot4.png"); // TODO: 換成你的插圖/吉祥物
 
 export default function LoginScreen() {
   const { login } = useAuth();
+  const { colorScheme } = useTheme();
+  const colors = Colors[colorScheme];
   const [account, setAccount] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [secure, setSecure] = React.useState(true);
@@ -91,6 +95,7 @@ export default function LoginScreen() {
                   returnKeyType="done"
                   onSubmitEditing={onSubmit}
                   rightIconName={secure ? "eye-off-outline" : "eye-outline"}
+                  rightIconColor={colors.icon.default}
                   onPressRightIcon={() => setSecure((v) => !v)}
                 />
               </View>
@@ -101,7 +106,7 @@ export default function LoginScreen() {
                 className="mt-4 self-end"
                 hitSlop={10}
               >
-                <Text className="text-xs font-chineseRegular text-black/45">
+                <Text className="text-xs font-chineseRegular text-text-subtle-light dark:text-text-subtle-dark">
                   忘記密碼?
                 </Text>
               </Pressable>
