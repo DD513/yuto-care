@@ -83,6 +83,8 @@ export default function LoginScreen() {
                 keyboardType="default"
                 placeholder="example@gmail.com"
                 returnKeyType="next"
+                textContentType="emailAddress" // ✅ iOS：標記為電子郵件
+                autoComplete="email" // ✅ Android：自動填充郵件
               />
 
               <View className="mt-7">
@@ -97,6 +99,8 @@ export default function LoginScreen() {
                   rightIconName={secure ? "eye-off-outline" : "eye-outline"}
                   rightIconColor={colors.icon.default}
                   onPressRightIcon={() => setSecure((v) => !v)}
+                  textContentType="password" // ✅ iOS：標記為密碼
+                  autoComplete="password" // ✅ Android：自動填充密碼
                 />
               </View>
 
