@@ -1,17 +1,23 @@
 import React from "react";
 import { Slot, useRouter, useSegments } from "expo-router";
-import { useAuth } from "@/contexts/AuthProvider";
+import { useAppSelector } from "@/store/hooks";
+import {
+  selectBootstrapped,
+  selectIsAuthenticated,
+} from "@/features/auth/authSlice";
 import {
   getRouteConfigOrDefault,
   validateAllRouteConfigs,
 } from "@/utils/route";
 
 export function RouteGuard() {
-  const { bootstrapped, isAuthenticated } = useAuth();
+  const bootstrapped = useAppSelector(selectBootstrapped);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+
   const segments = useSegments();
   const router = useRouter();
 
-  // ✅ 只在 dev 時驗證一次（mount 時）
+  // 只在 dev 時驗證一次（mount 時）
   React.useEffect(() => {
     validateAllRouteConfigs();
   }, []);

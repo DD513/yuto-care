@@ -42,10 +42,10 @@ export const authApi = {
     return res.data.user;
   },
 
-  async me() {
+  async getCurrentUser() {
     if (ENV.useMockApi) return mockUser;
 
-    const res = await api.get<{ user: User }>("/me");
+    const res = await api.get<{ user: User }>("/user");
     return res.data.user;
   },
 

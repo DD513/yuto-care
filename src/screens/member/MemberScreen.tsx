@@ -4,14 +4,16 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { useTheme } from "../../hooks/useTheme";
 import { Header } from "../../components/navigation/Header";
-import { useAuth } from "@/contexts/AuthProvider";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { logout, selectUser } from "@/features/auth/authSlice";
 import { ListRow } from "@/components/ui/ListRow";
 import { Avatar } from "@/components/ui/Avatar";
 import { ListGroup } from "@/components/ui/ListGroup";
 
 export default function MemberScreen() {
   const { theme, colorScheme } = useTheme();
-  const { user, logout } = useAuth();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
 
   const themeLabel =
     theme === "system"
@@ -27,7 +29,7 @@ export default function MemberScreen() {
         text: "登出",
         style: "destructive",
         onPress: async () => {
-          await logout(); // ✅ tokenStorage.clear() + setUser(null)
+          await dispatch(logout()).unwrap();
           router.replace("/(auth)/login"); // （RouteGuard 也會處理）
         },
       },

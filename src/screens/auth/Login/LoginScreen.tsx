@@ -12,36 +12,48 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { LinearGradient } from "expo-linear-gradient";
-import { useAuth } from "@/contexts/AuthProvider";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import {
+  login,
+  clearAuthError,
+  selectAuthError,
+} from "@/features/auth/authSlice";
 import { UnderlineInput } from "@/components/ui/UnderlineInput";
 import { useTheme } from "@/hooks/useTheme";
 import { Colors } from "@/constants/colors";
 
-const ILLUSTRATION_SOURCE = require("../../../../assets/images/logo/yuto-mascot4.png"); // TODO: 換成你的插圖/吉祥物
+const ILLUSTRATION_SOURCE = require("../../../../assets/images/logo/yuto-mascot4.png");
 
 export default function LoginScreen() {
-  const { login } = useAuth();
+  const dispatch = useAppDispatch();
+  const authError = useAppSelector(selectAuthError);
+
   const { colorScheme } = useTheme();
   const colors = Colors[colorScheme];
   const [account, setAccount] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [secure, setSecure] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState<string | null>(null);
 
   const onSubmit = async () => {
-    setError(null);
+    dispatch(clearAuthError());
     setLoading(true);
     try {
-      await login(account.trim(), password);
+      await dispatch(login({ account: account.trim(), password })).unwrap();
       Keyboard.dismiss();
     } catch {
-      setError("登入失敗，請確認帳密或網路狀態");
+      // error message 由 slice 決定也行，你也可以在這邊設 UI 字串
     } finally {
       setLoading(false);
     }
   };
+
+  const errorText =
+    authError === "LOGIN_FAILED"
+      ? "登入失敗，請確認帳密或網路狀態"
+      : authError
+        ? "登入失敗"
+        : null;
 
   const onOtherLogin = () => {
     // TODO: 之後你要做 Apple/Google/醫院 SSO，都可以先導去一個選擇頁
@@ -116,9 +128,9 @@ export default function LoginScreen() {
               </Pressable>
 
               {/* error */}
-              {error ? (
+              {errorText ? (
                 <Text className="mt-3 font-chineseRegular text-sm text-red-500">
-                  {error}
+                  {errorText}
                 </Text>
               ) : null}
 
@@ -133,7 +145,7 @@ export default function LoginScreen() {
                 {loading ? (
                   <View className="flex-row items-center">
                     <ActivityIndicator color="#fff" />
-                    <Text className="ml-2 font-EnglishBold text-base text-text-light dark:text-text-dark">
+                    <Text className="ml-2 font-ｅnglishBold text-base text-text-light dark:text-text-dark">
                       Logging in...
                     </Text>
                   </View>
@@ -160,7 +172,7 @@ export default function LoginScreen() {
                   還沒有帳號嗎?{" "}
                 </Text>
                 <Pressable onPress={() => {}} hitSlop={10}>
-                  <Text className="text-base font-EnglishBold text-primary">
+                  <Text className="text-base font-englishBold text-primary">
                     註冊
                   </Text>
                 </Pressable>
