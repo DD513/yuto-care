@@ -48,7 +48,15 @@ export const login = createAsyncThunk<
   try {
     const user = await authApi.login({ account, password });
     return user;
-  } catch {
+  }catch (e: any) {
+    console.log("LOGIN ERROR:", {
+      message: e?.message,
+      code: e?.code,
+      status: e?.response?.status,
+      data: e?.response?.data,
+      url: e?.config?.url,
+      baseURL: e?.config?.baseURL,
+    });
     return rejectWithValue("LOGIN_FAILED");
   }
 });

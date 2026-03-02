@@ -4,6 +4,15 @@
   "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
+    "start:dev": "cross-env APP_ENV=development DOTENV_CONFIG_PATH=.env.development expo start",
+    "start:stg": "cross-env APP_ENV=staging DOTENV_CONFIG_PATH=.env.staging expo start",
+    "start:prod": "cross-env APP_ENV=production DOTENV_CONFIG_PATH=.env.production expo start",
+    "ios:dev": "cross-env APP_ENV=development DOTENV_CONFIG_PATH=.env.development npx expo run:ios -d",
+    "ios:stg": "cross-env APP_ENV=staging DOTENV_CONFIG_PATH=.env.staging npx expo run:ios -d",
+    "ios:prod": "cross-env APP_ENV=production DOTENV_CONFIG_PATH=.env.production npx expo run:ios -d",
+    "android:dev": "cross-env APP_ENV=development DOTENV_CONFIG_PATH=.env.development npx expo run:android",
+    "android:stg": "cross-env APP_ENV=staging DOTENV_CONFIG_PATH=.env.staging npx expo run:android",
+    "android:prod": "cross-env APP_ENV=production DOTENV_CONFIG_PATH=.env.production npx expo run:android",
     "prebuild": "expo prebuild --clean",
     "pod-install": "cd ios && pod install && cd ..",
     "setup": "npm run prebuild && npm run pod-install",
@@ -41,6 +50,7 @@
   },
   "devDependencies": {
     "@types/react": "~19.1.10",
+    "cross-env": "^10.1.0",
     "dotenv": "^17.2.3",
     "prettier-plugin-tailwindcss": "^0.5.14",
     "react-refresh": "^0.18.0",

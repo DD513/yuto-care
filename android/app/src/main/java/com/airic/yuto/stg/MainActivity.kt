@@ -1,4 +1,4 @@
-package com.airic.yuto.dev
+package com.airic.yuto.stg
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

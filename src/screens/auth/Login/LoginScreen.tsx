@@ -21,6 +21,7 @@ import {
 import { UnderlineInput } from "@/components/ui/UnderlineInput";
 import { useTheme } from "@/hooks/useTheme";
 import { Colors } from "@/constants/colors";
+import Constants from "expo-constants";
 
 const ILLUSTRATION_SOURCE = require("../../../../assets/images/logo/yuto-mascot4.png");
 
@@ -34,6 +35,14 @@ export default function LoginScreen() {
   const [password, setPassword] = React.useState("");
   const [secure, setSecure] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
+
+  const extra =
+    Constants.expoConfig?.extra ??
+    (Constants as any).manifest?.extra ??
+    (Constants as any).manifest2?.extra;
+
+  // console.log("APP_ENV:", extra?.APP_ENV);
+  // console.log("API_BASE_URL:", extra?.API_BASE_URL);
 
   const onSubmit = async () => {
     dispatch(clearAuthError());

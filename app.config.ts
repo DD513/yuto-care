@@ -1,8 +1,18 @@
-import "dotenv/config";
+import * as path from "path";
+import dotenv from "dotenv";
 import type { ExpoConfig, ConfigContext } from "expo/config";
 
 type AppEnv = "development" | "staging" | "production";
-const appEnv = (process.env.APP_ENV ?? "development") as AppEnv;
+const rawEnv = process.env.APP_ENV ?? "development";
+const appEnv: AppEnv = (["development", "staging", "production"].includes(rawEnv)
+  ? rawEnv
+  : "development") as AppEnv;
+
+// 依環境載入正確的 .env 檔
+dotenv.config({
+  path: path.resolve(process.cwd(), `.env.${appEnv}`),
+  override: true, // 讓 staging/prod 能覆蓋掉 Expo 先載入的值
+});
 
 const nameMap: Record<AppEnv, string> = {
   development: "Yuto (Dev)",
@@ -13,13 +23,13 @@ const nameMap: Record<AppEnv, string> = {
 const bundleIdMap: Record<AppEnv, string> = {
   development: "com.airic.yuto.dev",
   staging: "com.airic.yuto.stg",
-  production: "com.airic.Yuto",
+  production: "com.airic.yuto",
 };
 
 const androidPackageMap: Record<AppEnv, string> = {
   development: "com.airic.yuto.dev",
   staging: "com.airic.yuto.stg",
-  production: "com.airic.Yuto",
+  production: "com.airic.yuto",
 };
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
