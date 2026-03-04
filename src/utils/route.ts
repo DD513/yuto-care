@@ -10,7 +10,7 @@ function warnDev(message: string) {
 }
 
 /**
- * ✅ development 時驗證單一路由設定是否自洽（不 throw，避免你開發被卡死）
+ * development 時驗證單一路由設定是否自洽（不 throw，避免你開發被卡死）
  */
 export function validateRouteConfigKey(
   key: string,
@@ -37,7 +37,7 @@ export function validateRouteConfigKey(
 }
 
 /**
- * ✅ 啟動時驗證整份 ROUTE_CONFIG（建議在 RouteGuard mount 時呼叫一次）
+ * 啟動時驗證整份 ROUTE_CONFIG（建議在 RouteGuard mount 時呼叫一次）
  */
 export function validateAllRouteConfigs(): void {
   if (!isDev()) return;
@@ -95,6 +95,7 @@ export function getRouteConfig(segments: string[]): RouteAuthConfig | undefined 
 export function getRouteConfigOrDefault(
   segments: string[]
 ): RouteAuthConfig & { __default?: boolean } {
+  
   const config = getRouteConfig(segments);
   if (config) return config;
 

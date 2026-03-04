@@ -1,13 +1,14 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { useColorScheme as useDeviceColorScheme } from "react-native";
+import React, { createContext, useEffect, useMemo, useState } from "react";
+import { Appearance } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { colorScheme as nativeWindColorScheme } from "nativewind";
 
 type ThemeMode = "system" | "light" | "dark";
+type Scheme = "light" | "dark";
 
 type YutoThemeContextValue = {
-  theme: ThemeMode; // 使用者選的：system / light / dark
-  colorScheme: "light" | "dark"; // 真正套用到畫面的：light / dark
+  theme: ThemeMode;
+  colorScheme: Scheme;
   setTheme: (mode: ThemeMode) => void;
 };
 
@@ -20,15 +21,15 @@ const STORAGE_KEY = "yuto-theme-mode";
 export const YutoThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const deviceScheme = useDeviceColorScheme() ?? "light"; // 手機系統目前的深淺
   const [theme, setTheme] = useState<ThemeMode>("system");
   const [isThemeReady, setIsThemeReady] = useState(false);
 
-  // 轉成真正要給畫面用的 light / dark
-  const resolvedScheme: "light" | "dark" =
-    theme === "system" ? deviceScheme : theme;
+  // ✅ 永遠追蹤「系統」目前的顏色（避免切換瞬間拿到舊值）
+  const [systemScheme, setSystemScheme] = useState<Scheme>(
+    (Appearance.getColorScheme() ?? "light") as Scheme,
+  );
 
-  // 啟動時從 AsyncStorage 把主題讀回來
+  // 1) 啟動讀取設定
   useEffect(() => {
     (async () => {
       try {
@@ -44,24 +45,43 @@ export const YutoThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     })();
   }, []);
 
-  // 使用者切換主題時，寫回 AsyncStorage
+  // 2) 設定變更寫回
   useEffect(() => {
-    if (!isThemeReady) return; // 讀完之前不要寫
+    if (!isThemeReady) return;
     AsyncStorage.setItem(STORAGE_KEY, theme).catch(() => {});
   }, [theme, isThemeReady]);
 
-  // 🔥 最重要：同步給 NativeWind，讓 `dark:` 能正常運作
+  // 3) 永遠監聽系統變化，更新 systemScheme（不管你是不是 system 模式都更新）
   useEffect(() => {
-    nativeWindColorScheme.set(resolvedScheme);
-  }, [resolvedScheme]);
+    const sub = Appearance.addChangeListener(({ colorScheme }) => {
+      setSystemScheme((colorScheme ?? "light") as Scheme);
+    });
+    return () => sub.remove();
+  }, []);
 
-  const value: YutoThemeContextValue = {
-    theme,
-    colorScheme: resolvedScheme,
-    setTheme,
-  };
+  // 4) 真正套用到畫面的 scheme（唯一來源）
+  const resolvedScheme: Scheme = theme === "system" ? systemScheme : theme;
+  // console.log("theme ->", theme);
+  // console.log("Appearance.getColorScheme()", Appearance.getColorScheme());
+  // console.log("systemScheme state", systemScheme);
+  // console.log("resolvedScheme", resolvedScheme);
 
-  // 等主題載回來再 render，避免一啟動先閃一下預設值
+  // 5) 同步給 NativeWind（dark: 立即生效）
+  useEffect(() => {
+    if (theme === "system") {
+      nativeWindColorScheme.set("system");
+
+      // 立刻抓一次最新系統值，減少延遲造成的「先顯示上一個顏色」
+      setSystemScheme((Appearance.getColorScheme() ?? "light") as Scheme);
+    } else {
+      nativeWindColorScheme.set(theme);
+    }
+  }, [theme]);
+
+  const value = useMemo<YutoThemeContextValue>(() => {
+    return { theme, colorScheme: resolvedScheme, setTheme };
+  }, [theme, resolvedScheme]);
+
   if (!isThemeReady) return null;
 
   return (

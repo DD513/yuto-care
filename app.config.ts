@@ -14,6 +14,12 @@ dotenv.config({
   override: true, // 讓 staging/prod 能覆蓋掉 Expo 先載入的值
 });
 
+const schemeMap: Record<AppEnv, string> = {
+  development: "yuto-dev",
+  staging: "yuto-stg",
+  production: "yuto",
+};
+
 const nameMap: Record<AppEnv, string> = {
   development: "Yuto (Dev)",
   staging: "Yuto (Stg)",
@@ -49,6 +55,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ios: {
     supportsTablet: true,
     bundleIdentifier: bundleIdMap[appEnv],
+    userInterfaceStyle: "automatic"
   },
   android: {
     adaptiveIcon: {
@@ -58,11 +65,12 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     edgeToEdgeEnabled: true,
     predictiveBackGestureEnabled: false,
     package: androidPackageMap[appEnv],
+    userInterfaceStyle: "automatic"
   },
   web: {
     bundler: "metro",
   },
-  scheme: "yuto",
+  scheme: schemeMap[appEnv],
   plugins: ["expo-router"],
 
   // ✅ App 端可讀取的「非機密」設定

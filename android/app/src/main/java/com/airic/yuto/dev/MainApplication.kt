@@ -1,4 +1,4 @@
-package com.airic.yuto.stg
+package com.airic.yuto.dev
 
 import android.app.Application
 import android.content.res.Configuration

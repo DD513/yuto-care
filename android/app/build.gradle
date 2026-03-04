@@ -87,9 +87,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.airic.yuto.stg'
+    namespace 'com.airic.yuto.dev'
     defaultConfig {
-        applicationId 'com.airic.yuto.stg'
+        applicationId 'com.airic.yuto.dev'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

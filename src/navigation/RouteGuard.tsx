@@ -27,22 +27,22 @@ export function RouteGuard() {
 
     const cfg = getRouteConfigOrDefault(segments);
 
-    // ✅ 1) 公開頁：永遠放行
+    // 1) 公開頁：永遠放行
     if (cfg.public) return;
 
-    // ✅ 2) authOnly：已登入者不應進入（login/register）
+    // 2) authOnly：已登入者不應進入（login/register）
     if (cfg.authOnly) {
       if (isAuthenticated) router.replace("/(main)");
       return;
     }
 
-    // ✅ 3) 需要登入：未登入導去 login
+    // 3) 需要登入：未登入導去 login
     if (cfg.requiresAuth && !isAuthenticated) {
       router.replace("/(auth)/login");
       return;
     }
 
-    // ✅ 4) 其他狀況：放行
+    // 4) 其他狀況：放行
   }, [bootstrapped, isAuthenticated, segments, router]);
 
   if (!bootstrapped) return null;
