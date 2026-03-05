@@ -75,11 +75,10 @@ trivy-fs:
 # 統整報告
 security-report:
   stage: report
-  image: alpine:latest
+  image: debian:bookworm-slim
   
   before_script:
-    - apk add --no-cache ca-certificates && update-ca-certificates
-    - apk add --no-cache jq
+    - apt-get update && apt-get install -y --no-install-recommends jq
   
   script:
     - echo "=== 安全掃描統計 ==="
