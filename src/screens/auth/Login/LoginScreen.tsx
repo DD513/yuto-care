@@ -138,13 +138,17 @@ export default function LoginScreen() {
 
               {/* error */}
               {errorText ? (
-                <Text className="mt-3 font-chineseRegular text-sm text-red-500">
+                <Text
+                  testID="login-error-text"
+                  className="mt-3 font-chineseRegular text-sm text-red-500"
+                >
                   {errorText}
                 </Text>
               ) : null}
 
               {/* Login button */}
               <Pressable
+                testID="login-button"
                 onPress={onSubmit}
                 disabled={isDisabled}
                 className={`mt-6 h-14 items-center justify-center rounded-2xl ${
@@ -154,7 +158,7 @@ export default function LoginScreen() {
                 {loading ? (
                   <View className="flex-row items-center">
                     <ActivityIndicator color="#fff" />
-                    <Text className="ml-2 font-ｅnglishBold text-base text-text-light dark:text-text-dark">
+                    <Text className="ml-2 font-englishBold text-base text-text-light dark:text-text-dark">
                       Logging in...
                     </Text>
                   </View>
