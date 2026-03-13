@@ -49,6 +49,7 @@ export function UnderlineInput({
 
         {rightIconName ? (
           <Pressable
+            testID="underline-input-right-icon-button"
             onPress={onPressRightIcon}
             hitSlop={10}
             className="pl-3 py-2"

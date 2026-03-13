@@ -1,4 +1,4 @@
-import "../global.css"; // ✅ 在這裡 import Tailwind / NativeWind 的 CSS
+import "../global.css"; // 在這裡 import Tailwind / NativeWind 的 CSS
 
 import React from "react";
 import { Provider } from "react-redux";
@@ -16,7 +16,7 @@ SplashScreen.preventAutoHideAsync().catch(() => {
   /* ignore */
 });
 
-function AppBootstrapGate({ fontsLoaded }: { fontsLoaded: boolean }) {
+function AppBootstrapGate({ isFontsReady }: { isFontsReady: boolean }) {
   const dispatch = useAppDispatch();
   const bootstrapped = useAppSelector(selectBootstrapped);
 
@@ -25,21 +25,14 @@ function AppBootstrapGate({ fontsLoaded }: { fontsLoaded: boolean }) {
   }, [dispatch]);
 
   React.useEffect(() => {
-    if (fontsLoaded && bootstrapped) {
+    if (isFontsReady && bootstrapped) {
       SplashScreen.hideAsync().catch(() => {});
     }
-  }, [fontsLoaded, bootstrapped]);
+  }, [isFontsReady, bootstrapped]);
 
-  // fonts 或 auth 還沒 ready：維持 splash（不 render）
-  if (!fontsLoaded || !bootstrapped) return null;
+  if (!isFontsReady || !bootstrapped) return null;
 
-  return (
-    <YutoThemeProvider>
-      <SafeAreaProvider>
-        <RouteGuard />
-      </SafeAreaProvider>
-    </YutoThemeProvider>
-  );
+  return <RouteGuard />;
 }
 
 export default function RootLayout() {
@@ -53,7 +46,11 @@ export default function RootLayout() {
 
   return (
     <Provider store={store}>
-      <AppBootstrapGate fontsLoaded={!!fontsLoaded} />
+      <SafeAreaProvider>
+        <YutoThemeProvider>
+          <AppBootstrapGate isFontsReady={!!fontsLoaded} />
+        </YutoThemeProvider>
+      </SafeAreaProvider>
     </Provider>
   );
 }

@@ -2,8 +2,22 @@ import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import LoginScreen from "@/screens/auth/Login/LoginScreen";
 
+function createDeferred<T = unknown>() {
+  let resolve!: (value: T) => void;
+  let reject!: (reason?: unknown) => void;
+
+  const promise = new Promise<T>((res, rej) => {
+    resolve = res;
+    reject = rej;
+  });
+
+  return { promise, resolve, reject };
+}
+
+const mockUnwrap = jest.fn().mockResolvedValue(undefined);
+
 const mockDispatch = jest.fn(() => ({
-  unwrap: jest.fn().mockResolvedValue(undefined),
+  unwrap: mockUnwrap,
 }));
 
 const mockLogin = jest.fn((payload) => ({
@@ -15,12 +29,13 @@ const mockClearAuthError = jest.fn(() => ({
   type: "auth/clearAuthError",
 }));
 
+let mockAuthState = {
+  auth: { error: null as string | null },
+};
+
 jest.mock("@/store/hooks", () => ({
   useAppDispatch: () => mockDispatch,
-  useAppSelector: (selector: any) =>
-    selector({
-      auth: { error: null },
-    }),
+  useAppSelector: (selector: any) => selector(mockAuthState),
 }));
 
 jest.mock("@/hooks/useTheme", () => ({
@@ -99,5 +114,37 @@ describe("LoginScreen", () => {
       account: "nurse@test.com",
       password: "123456",
     });
+  });
+
+  it("shows login error message when authError is LOGIN_FAILED", () => {
+    mockAuthState = {
+      auth: { error: "LOGIN_FAILED" },
+    };
+
+    render(<LoginScreen />);
+
+    expect(screen.getByText("登入失敗，請確認帳密或網路狀態")).toBeTruthy();
+  });
+
+  it("shows loading state while login is in progress", async () => {
+    const deferred = createDeferred<void>();
+    mockUnwrap.mockReturnValueOnce(deferred.promise);
+
+    render(<LoginScreen />);
+
+    const account = screen.getByPlaceholderText("example@gmail.com");
+    const password = screen.getByPlaceholderText("************");
+    const loginButton = screen.getByTestId("login-button");
+
+    fireEvent.changeText(account, "nurse@test.com");
+    fireEvent.changeText(password, "123456");
+    fireEvent.press(loginButton);
+
+    expect(screen.getByTestId("login-loading")).toBeTruthy();
+    expect(screen.getByText("Logging in...")).toBeTruthy();
+
+    deferred.resolve();
+
+    await screen.findByTestId("login-button");
   });
 });

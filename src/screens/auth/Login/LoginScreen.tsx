@@ -156,9 +156,15 @@ export default function LoginScreen() {
                 }`}
               >
                 {loading ? (
-                  <View className="flex-row items-center">
-                    <ActivityIndicator color="#fff" />
-                    <Text className="ml-2 font-englishBold text-base text-text-light dark:text-text-dark">
+                  <View
+                    testID="login-loading"
+                    className="flex-row items-center justify-center"
+                  >
+                    <ActivityIndicator
+                      testID="login-loading-spinner"
+                      color="#fff"
+                    />
+                    <Text className="ml-2 font-englishBold text-base text-white">
                       Logging in...
                     </Text>
                   </View>

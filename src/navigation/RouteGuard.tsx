@@ -8,6 +8,7 @@ import {
 import {
   getRouteConfigOrDefault,
   validateAllRouteConfigs,
+  isDev,
 } from "@/utils/route";
 
 export function RouteGuard() {
@@ -19,25 +20,26 @@ export function RouteGuard() {
 
   // 只在 dev 時驗證一次（mount 時）
   React.useEffect(() => {
+    if (!isDev()) return;
     validateAllRouteConfigs();
   }, []);
 
   React.useEffect(() => {
     if (!bootstrapped) return;
 
-    const cfg = getRouteConfigOrDefault(segments);
+    const routeConfig = getRouteConfigOrDefault(segments);
 
     // 1) 公開頁：永遠放行
-    if (cfg.public) return;
+    if (routeConfig.public) return;
 
     // 2) authOnly：已登入者不應進入（login/register）
-    if (cfg.authOnly) {
+    if (routeConfig.authOnly) {
       if (isAuthenticated) router.replace("/(main)");
       return;
     }
 
     // 3) 需要登入：未登入導去 login
-    if (cfg.requiresAuth && !isAuthenticated) {
+    if (routeConfig.requiresAuth && !isAuthenticated) {
       router.replace("/(auth)/login");
       return;
     }
