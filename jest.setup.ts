@@ -24,7 +24,7 @@ jest.mock("expo-router", () => {
   };
 });
 
-// Vector Icons mock（避免 act warning）
+// Vector Icons mock
 jest.mock("@expo/vector-icons", () => ({
   Ionicons: () => null,
 }));
@@ -41,7 +41,7 @@ jest.mock("expo-constants", () => ({
 
 // AsyncStorage
 jest.mock("@react-native-async-storage/async-storage", () =>
-  require("@react-native-async-storage/async-storage/jest/async-storage-mock")
+  require("@react-native-async-storage/async-storage/jest/async_storage_mock")
 );
 
 // SecureStore
@@ -53,13 +53,15 @@ jest.mock("expo-secure-store", () => ({
 
 // Appearance
 jest.mock("react-native/Libraries/Utilities/Appearance", () => {
-  let currentScheme: "light" | "dark" = "light";
+  let currentScheme = "light";
 
   return {
     getColorScheme: jest.fn(() => currentScheme),
     addChangeListener: jest.fn(() => ({
       remove: jest.fn(),
     })),
+    removeChangeListener: jest.fn(),
+    setColorScheme: jest.fn(),
     __setColorScheme: (scheme: "light" | "dark") => {
       currentScheme = scheme;
     },

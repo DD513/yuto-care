@@ -25,6 +25,7 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="yuto-dev"/>
+        <data android:scheme="exp+yuto"/>
       </intent-filter>
     </activity>
   </application>

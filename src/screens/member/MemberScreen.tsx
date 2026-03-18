@@ -2,10 +2,11 @@ import React from "react";
 import { View, Text, ScrollView, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
-import { useTheme } from "../../hooks/useTheme";
-import { Header } from "../../components/navigation/Header";
+import { useTheme } from "@/hooks/useTheme";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { logout, selectUser } from "@/features/auth/authSlice";
+
+import { Header } from "@/components/navigation/Header";
 import { ListRow } from "@/components/ui/ListRow";
 import { Avatar } from "@/components/ui/Avatar";
 import { ListGroup } from "@/components/ui/ListGroup";
@@ -74,12 +75,14 @@ export default function MemberScreen() {
         {/* ✅ Settings Card（仿照你給的「一張卡多列」） */}
         <ListGroup className="mt-0">
           <ListRow
+            testID="member-theme-row"
             iconName="color-palette-outline"
             label="主題"
             value={themeLabel}
             onPress={() => router.push("/(main)/member/theme")}
           />
           <ListRow
+            testID="member-notifications-row"
             iconName="notifications-outline"
             label="通知"
             onPress={() => {
@@ -87,6 +90,7 @@ export default function MemberScreen() {
             }}
           />
           <ListRow
+            testID="member-lock-row"
             iconName="lock-closed-outline"
             label="鎖定螢幕"
             onPress={() => {
@@ -99,6 +103,7 @@ export default function MemberScreen() {
         {/* ✅ 其他 */}
         <ListGroup className="mt-6">
           <ListRow
+            testID="member-review-row"
             iconName="star-outline"
             label="寫評價"
             onPress={() => {
@@ -106,6 +111,7 @@ export default function MemberScreen() {
             }}
           />
           <ListRow
+            testID="member-support-row"
             iconName="help-circle-outline"
             label="Yuto 支援"
             onPress={() => {
@@ -113,6 +119,7 @@ export default function MemberScreen() {
             }}
           />
           <ListRow
+            testID="member-app-info-row"
             iconName="information-circle-outline"
             label="App 資訊"
             onPress={() => {
@@ -120,6 +127,7 @@ export default function MemberScreen() {
             }}
           />
           <ListRow
+            testID="member-account-row"
             iconName="person-outline"
             label="帳號"
             onPress={() => {
@@ -132,6 +140,7 @@ export default function MemberScreen() {
         {/* ✅ Logout（放在卡片列的風格，跟截圖一致） */}
         <ListGroup className="mt-6">
           <ListRow
+            testID="member-logout-row"
             iconName="log-out-outline"
             label="登出"
             onPress={onLogout}

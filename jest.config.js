@@ -10,6 +10,8 @@ module.exports = {
     "!**/.expo/**",
   ],
   moduleNameMapper: {
+    "^react-native-safe-area-context$":
+      "<rootDir>/test-utils/mocks/react-native-safe-area-context.tsx",
     "^@/(.*)$": "<rootDir>/src/$1",
     "^@test-utils/(.*)$": "<rootDir>/test-utils/$1",
   },
