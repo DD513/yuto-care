@@ -6,7 +6,7 @@ import { router } from "expo-router";
 
 export function Header({
   title,
-  showBackButton = true, // 預設顯示返回按鈕
+  showBackButton = true,
 }: {
   title: string;
   showBackButton?: boolean;
@@ -17,6 +17,9 @@ export function Header({
     <View className="flex-row items-center justify-between px-4 py-3">
       {showBackButton && (
         <Pressable
+          testID="header-back-button"
+          accessibilityRole="button"
+          accessibilityLabel="header-back-button"
           onPress={() => router.back()}
           className="h-9 w-9 items-center justify-center rounded-full active:opacity-70"
         >
@@ -28,7 +31,6 @@ export function Header({
         </Pressable>
       )}
 
-      {/* 使標題居中，無論是否顯示返回按鈕 */}
       <Text
         className={`font-chineseBold text-xl font-semibold text-text-light dark:text-text-dark ${
           showBackButton ? "" : "flex-1 text-center"
@@ -37,7 +39,6 @@ export function Header({
         {title}
       </Text>
 
-      {/* 如果沒有顯示返回按鈕，右側不佔位 */}
       {showBackButton && <View className="h-9 w-9" />}
     </View>
   );

@@ -1,6 +1,10 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import LoginScreen from "@/screens/auth/Login/LoginScreen";
+import {
+  createMockThemeState,
+  type MockThemeState,
+} from "@test-utils/mockTheme";
 
 function createDeferred<T = unknown>() {
   let resolve!: (value: T) => void;
@@ -29,6 +33,8 @@ const mockClearAuthError = jest.fn(() => ({
   type: "auth/clearAuthError",
 }));
 
+let mockThemeState: MockThemeState = createMockThemeState();
+
 let mockAuthState = {
   auth: { error: null as string | null },
 };
@@ -39,11 +45,7 @@ jest.mock("@/store/hooks", () => ({
 }));
 
 jest.mock("@/hooks/useTheme", () => ({
-  useTheme: () => ({
-    colorScheme: "light",
-    theme: "light",
-    setTheme: jest.fn(),
-  }),
+  useTheme: () => mockThemeState,
 }));
 
 jest.mock("@/features/auth/authSlice", () => ({
@@ -64,6 +66,12 @@ jest.mock("expo-constants", () => ({
 describe("LoginScreen", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+
+    mockThemeState = createMockThemeState();
+
+    mockAuthState = {
+      auth: { error: null },
+    };
   });
 
   it("renders login screen elements", () => {

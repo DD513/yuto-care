@@ -2,17 +2,28 @@ import React from "react";
 import { View, Text, Pressable, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-import { router } from "expo-router";
-import { useTheme } from "../../hooks/useTheme";
-import { Header } from "../../components/navigation/Header";
+import { useTheme } from "@/hooks/useTheme";
+import { Header } from "@/components/navigation/Header";
 
 export default function ThemeScreen() {
-  const { theme, colorScheme, setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   const options = [
-    { key: "system" as const, label: "跟隨系統", desc: "依照裝置外觀自動切換" },
-    { key: "light" as const, label: "淺色主題", desc: "適合明亮環境使用" },
-    { key: "dark" as const, label: "深色主題", desc: "夜間閱讀更舒適" },
+    {
+      key: "system" as const,
+      label: "跟隨系統",
+      desc: "依照裝置外觀自動切換",
+    },
+    {
+      key: "light" as const,
+      label: "淺色主題",
+      desc: "適合明亮環境使用",
+    },
+    {
+      key: "dark" as const,
+      label: "深色主題",
+      desc: "夜間閱讀更舒適",
+    },
   ];
 
   return (
@@ -25,7 +36,7 @@ export default function ThemeScreen() {
           paddingVertical: 12,
         }}
       >
-        <View className="rounded-3xl bg-surface-light dark:bg-surface-dark overflow-hidden">
+        <View className="overflow-hidden rounded-3xl bg-surface-light dark:bg-surface-dark">
           {options.map((opt, index) => {
             const isSelected = theme === opt.key;
             const isLast = index === options.length - 1;
@@ -33,6 +44,9 @@ export default function ThemeScreen() {
             return (
               <Pressable
                 key={opt.key}
+                testID={`theme-option-${opt.key}`}
+                accessibilityRole="button"
+                accessibilityLabel={`theme-option-${opt.key}`}
                 onPress={() => setTheme(opt.key)}
                 className={`flex-row items-center justify-between px-4 py-3 ${
                   !isLast
@@ -44,14 +58,16 @@ export default function ThemeScreen() {
                   <Text className="font-chineseRegular text-base text-text-light dark:text-text-dark">
                     {opt.label}
                   </Text>
-                  <Text className="font-chineseRegular mt-0.5 text-xs text-text-subtle-light dark:text-text-subtle-dark">
+                  <Text className="mt-0.5 font-chineseRegular text-xs text-text-subtle-light dark:text-text-subtle-dark">
                     {opt.desc}
                   </Text>
                 </View>
 
-                {isSelected && (
-                  <Ionicons name="checkmark" size={20} color="#C79AEE" />
-                )}
+                {isSelected ? (
+                  <View testID={`theme-check-${opt.key}`}>
+                    <Ionicons name="checkmark" size={20} color="#C79AEE" />
+                  </View>
+                ) : null}
               </Pressable>
             );
           })}

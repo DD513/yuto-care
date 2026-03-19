@@ -15,6 +15,7 @@
     "app",
     "src",
     "nativewind-env.d.ts",
-    "test-utils"
+    "test-utils",
+    "__tests__/contexts"
   ]
 }

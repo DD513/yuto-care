@@ -8,19 +8,21 @@ require("react-native-reanimated").setUpTests();
 // Expo Router mock
 jest.mock("expo-router", () => {
   const actual = jest.requireActual("expo-router");
+  const { mockRouter } = require("./test-utils/mockRouter");
+
   return {
     ...actual,
     router: {
-      push: jest.fn(),
-      replace: jest.fn(),
-      back: jest.fn(),
+      push: (...args: any[]) => mockRouter.push(...args),
+      replace: (...args: any[]) => mockRouter.replace(...args),
+      back: (...args: any[]) => mockRouter.back(...args),
     },
     useRouter: () => ({
-      push: jest.fn(),
-      replace: jest.fn(),
-      back: jest.fn(),
+      push: (...args: any[]) => mockRouter.push(...args),
+      replace: (...args: any[]) => mockRouter.replace(...args),
+      back: (...args: any[]) => mockRouter.back(...args),
     }),
-    useSegments: () => ["(auth)", "login"],
+    useSegments: () => mockRouter.useSegments(),
   };
 });
 
@@ -41,7 +43,7 @@ jest.mock("expo-constants", () => ({
 
 // AsyncStorage
 jest.mock("@react-native-async-storage/async-storage", () =>
-  require("@react-native-async-storage/async-storage/jest/async_storage_mock")
+  require("@react-native-async-storage/async-storage/jest/async-storage-mock")
 );
 
 // SecureStore

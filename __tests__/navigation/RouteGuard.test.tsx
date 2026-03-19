@@ -2,8 +2,8 @@ import React from "react";
 import { render } from "@testing-library/react-native";
 import { RouteGuard } from "@/navigation/RouteGuard";
 import * as routeUtils from "@/utils/route";
+import { mockRouter, resetMockRouter } from "@test-utils/mockRouter";
 
-const mockReplace = jest.fn();
 const mockRenderSlot = jest.fn();
 
 let mockAuthState = {
@@ -12,8 +12,6 @@ let mockAuthState = {
     status: "guest",
   },
 };
-
-let mockSegments: string[] = ["(auth)", "login"];
 
 let mockRouteConfig = {
   public: false,
@@ -29,9 +27,9 @@ jest.mock("@/store/hooks", () => ({
 
 jest.mock("expo-router", () => ({
   useRouter: () => ({
-    replace: mockReplace,
+    replace: mockRouter.replace,
   }),
-  useSegments: () => mockSegments,
+  useSegments: () => mockRouter.useSegments(),
   Slot: function MockSlot() {
     mockRenderSlot();
     return null;
@@ -55,8 +53,6 @@ describe("RouteGuard", () => {
       },
     };
 
-    mockSegments = ["(auth)", "login"];
-
     mockRouteConfig = {
       public: false,
       authOnly: false,
@@ -77,7 +73,7 @@ describe("RouteGuard", () => {
     render(<RouteGuard />);
 
     expect(mockRenderSlot).not.toHaveBeenCalled();
-    expect(mockReplace).not.toHaveBeenCalled();
+    expect(mockRouter.replace).not.toHaveBeenCalled();
   });
 
   it("allows public routes without redirect", () => {
@@ -90,7 +86,7 @@ describe("RouteGuard", () => {
     render(<RouteGuard />);
 
     expect(mockRenderSlot).toHaveBeenCalledTimes(1);
-    expect(mockReplace).not.toHaveBeenCalled();
+    expect(mockRouter.replace).not.toHaveBeenCalled();
   });
 
   it("redirects authenticated user away from authOnly routes", () => {
@@ -109,7 +105,7 @@ describe("RouteGuard", () => {
 
     render(<RouteGuard />);
 
-    expect(mockReplace).toHaveBeenCalledWith("/(main)");
+    expect(mockRouter.replace).toHaveBeenCalledWith("/(main)");
     expect(mockRenderSlot).toHaveBeenCalledTimes(1);
   });
 
@@ -129,7 +125,7 @@ describe("RouteGuard", () => {
 
     render(<RouteGuard />);
 
-    expect(mockReplace).toHaveBeenCalledWith("/(auth)/login");
+    expect(mockRouter.replace).toHaveBeenCalledWith("/(auth)/login");
     expect(mockRenderSlot).toHaveBeenCalledTimes(1);
   });
 
@@ -150,7 +146,7 @@ describe("RouteGuard", () => {
     render(<RouteGuard />);
 
     expect(mockRenderSlot).toHaveBeenCalledTimes(1);
-    expect(mockReplace).not.toHaveBeenCalled();
+    expect(mockRouter.replace).not.toHaveBeenCalled();
   });
 
   it("calls validateAllRouteConfigs on mount in development", () => {
@@ -169,5 +165,16 @@ describe("RouteGuard", () => {
 
     expect(routeUtils.isDev).toHaveBeenCalled();
     expect(routeUtils.validateAllRouteConfigs).not.toHaveBeenCalled();
+  });
+
+  it("passes current segments into route config resolver", () => {
+    mockRouter.useSegments.mockReturnValue(["(main)", "member"]);
+
+    render(<RouteGuard />);
+
+    expect(routeUtils.getRouteConfigOrDefault).toHaveBeenCalledWith([
+      "(main)",
+      "member",
+    ]);
   });
 });

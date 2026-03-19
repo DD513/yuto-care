@@ -2,9 +2,11 @@ import React from "react";
 import { Alert } from "react-native";
 import { render, fireEvent, screen } from "@testing-library/react-native";
 import MemberScreen from "@/screens/member/MemberScreen";
-
-type ThemeMode = "light" | "dark" | "system";
-type ColorScheme = "light" | "dark";
+import {
+  createMockThemeState,
+  type MockThemeState,
+} from "@test-utils/mockTheme";
+import { mockRouter, resetMockRouter } from "@test-utils/mockRouter";
 
 type MockUser = {
   name: string;
@@ -19,16 +21,6 @@ type MockAuthState = {
   };
 };
 
-type MockThemeState = {
-  theme: ThemeMode;
-  colorScheme: ColorScheme;
-  setTheme: jest.Mock;
-};
-
-const mockPush = jest.fn();
-const mockReplace = jest.fn();
-const mockBack = jest.fn();
-
 const mockUnwrap = jest.fn().mockResolvedValue(undefined);
 const mockDispatch = jest.fn(() => ({
   unwrap: mockUnwrap,
@@ -38,11 +30,7 @@ const mockLogout = jest.fn(() => ({
   type: "auth/logout",
 }));
 
-let mockThemeState: MockThemeState = {
-  theme: "light",
-  colorScheme: "light",
-  setTheme: jest.fn(),
-};
+let mockThemeState: MockThemeState = createMockThemeState();
 
 let mockAuthState: MockAuthState = {
   auth: {
@@ -58,14 +46,6 @@ let mockAuthState: MockAuthState = {
 function renderMemberScreen() {
   return render(<MemberScreen />);
 }
-
-jest.mock("expo-router", () => ({
-  router: {
-    push: (...args: any[]) => mockPush(...args),
-    replace: (...args: any[]) => mockReplace(...args),
-    back: (...args: any[]) => mockBack(...args),
-  },
-}));
 
 jest.mock("@/hooks/useTheme", () => ({
   useTheme: () => mockThemeState,
@@ -86,11 +66,7 @@ describe("MemberScreen", () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
-    mockThemeState = {
-      theme: "light",
-      colorScheme: "light",
-      setTheme: jest.fn(),
-    };
+    mockThemeState = createMockThemeState();
 
     mockAuthState = {
       auth: {
@@ -139,11 +115,10 @@ describe("MemberScreen", () => {
   });
 
   it("shows correct theme label for light mode", () => {
-    mockThemeState = {
+    mockThemeState = createMockThemeState({
       theme: "light",
       colorScheme: "light",
-      setTheme: jest.fn(),
-    };
+    });
 
     renderMemberScreen();
 
@@ -151,11 +126,10 @@ describe("MemberScreen", () => {
   });
 
   it("shows correct theme label for dark mode", () => {
-    mockThemeState = {
+    mockThemeState = createMockThemeState({
       theme: "dark",
       colorScheme: "dark",
-      setTheme: jest.fn(),
-    };
+    });
 
     renderMemberScreen();
 
@@ -163,11 +137,10 @@ describe("MemberScreen", () => {
   });
 
   it("shows correct theme label for system light mode", () => {
-    mockThemeState = {
+    mockThemeState = createMockThemeState({
       theme: "system",
       colorScheme: "light",
-      setTheme: jest.fn(),
-    };
+    });
 
     renderMemberScreen();
 
@@ -175,11 +148,10 @@ describe("MemberScreen", () => {
   });
 
   it("shows correct theme label for system dark mode", () => {
-    mockThemeState = {
+    mockThemeState = createMockThemeState({
       theme: "system",
       colorScheme: "dark",
-      setTheme: jest.fn(),
-    };
+    });
 
     renderMemberScreen();
 
@@ -191,7 +163,7 @@ describe("MemberScreen", () => {
 
     fireEvent.press(screen.getByTestId("member-theme-row"));
 
-    expect(mockPush).toHaveBeenCalledWith("/(main)/member/theme");
+    expect(mockRouter.push).toHaveBeenCalledWith("/(main)/member/theme");
   });
 
   it("shows logout alert and confirms logout flow", async () => {
@@ -220,7 +192,7 @@ describe("MemberScreen", () => {
 
     expect(mockLogout).toHaveBeenCalledTimes(1);
     expect(mockDispatch).toHaveBeenCalled();
-    expect(mockReplace).toHaveBeenCalledWith("/(auth)/login");
+    expect(mockRouter.replace).toHaveBeenCalledWith("/(auth)/login");
   });
 
   it("does not logout when cancel is pressed", () => {
@@ -239,6 +211,6 @@ describe("MemberScreen", () => {
     cancelButton?.onPress?.();
 
     expect(mockLogout).not.toHaveBeenCalled();
-    expect(mockReplace).not.toHaveBeenCalled();
+    expect(mockRouter.replace).not.toHaveBeenCalled();
   });
 });
