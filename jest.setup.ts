@@ -27,9 +27,12 @@ jest.mock("expo-router", () => {
 });
 
 // Vector Icons mock
-jest.mock("@expo/vector-icons", () => ({
-  Ionicons: () => null,
-}));
+jest.mock("@expo/vector-icons", () => {
+  const { MockIonicons } = require("./test-utils/mockIcons");
+  return {
+    Ionicons: MockIonicons,
+  };
+});
 
 // Expo constants
 jest.mock("expo-constants", () => ({
