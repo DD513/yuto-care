@@ -5,8 +5,17 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "@assets/*": ["assets/*"]
+      "@assets/*": ["assets/*"],
+      "@test-utils/*": ["test-utils/*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx", "app", "src", "nativewind-env.d.ts"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "app",
+    "src",
+    "nativewind-env.d.ts",
+    "test-utils",
+    "__tests__/contexts"
+  ]
 }

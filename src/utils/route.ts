@@ -1,7 +1,7 @@
 import { ROUTE_CONFIG, type RouteAuthConfig } from "@/config/route";
 import { ENV } from "@/config/env";
 
-function isDev() {
+export function isDev() {
   return ENV.appEnv === "development";
 }
 
